@@ -8,5 +8,4 @@ void main()
  //left shift
  printf("\nleft shifted value: %d",64<<1);
  printf("\nleft shifted value: %d",2<<3);
-
 }
