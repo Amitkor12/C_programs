@@ -2,6 +2,19 @@
     "files.associations": {
         "stdint.h": "c",
         "memset_example.h": "c",
-        "random": "c"
+        "random": "c",
+        "array": "cpp",
+        "complex": "cpp",
+        "functional": "cpp",
+        "numeric": "cpp",
+        "string_view": "cpp",
+        "tuple": "cpp",
+        "type_traits": "cpp",
+        "utility": "cpp",
+        "*.tcc": "cpp",
+        "algorithm": "cpp",
+        "iterator": "cpp",
+        "memory": "cpp",
+        "ranges": "cpp"
     }
 }
