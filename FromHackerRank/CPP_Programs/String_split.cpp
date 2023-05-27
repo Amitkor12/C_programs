@@ -27,10 +27,9 @@ int main() {
             }
         }
         cout << str1 << " " << str2 <<endl;
-        memset(str3,0,sizeof(str3));
-        // str1.clear();
+        // memset(str3,0,sizeof(str3));
+        str1.clear();
         str2.clear();
     }    
-    
     return 0;
 }
