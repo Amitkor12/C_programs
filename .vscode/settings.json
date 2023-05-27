@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "stdint.h": "c",
-        "memset_example.h": "c"
+        "memset_example.h": "c",
+        "random": "c"
     }
 }
