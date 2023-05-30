@@ -1,0 +1,6 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/amitkor12/Documents/C-programing/C-Programes'
+make: Leaving directory '/home/amitkor12/Documents/C-programing/C-Programes'
+ 
+make: *** No targets specified and no makefile found.  Stop.
+
