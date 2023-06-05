@@ -17,6 +17,9 @@
         "memory": "cpp",
         "ranges": "cpp",
         "iosfwd": "c",
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "initializer_list": "cpp",
+        "iostream": "cpp",
+        "new": "cpp"
     }
 }
