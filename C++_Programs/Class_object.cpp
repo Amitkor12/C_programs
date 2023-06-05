@@ -6,7 +6,7 @@ class car                                                       // class of car
 {
 public:
     string name = "Mustang";                                    // properties of car class --> name 
-    int man_year = 1987;                                        // year
+    int man_year = 1967;                                        // year
     double price = 75.9000;                                     //price
 
 };
