@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+#if 0
 void printNumbers(int numbers[], int size) {
     printf("Numbers: ");
     for (int i = 0; i < size; i++) {
@@ -20,3 +21,10 @@ int main() {
 
     return 0;
 }
+#endif
+
+// double exapmle(double** il)
+// {
+//   int z,s;
+//   z = il.size();
+// }
