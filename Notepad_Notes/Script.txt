@@ -1,0 +1,71 @@
+
+2>nul call :CASE_%1
+if errorlevel 1 call :DEFAULT_CASE
+
+echo Build Script action finish
+exit /B
+
+:CASE_-bd
+	@rem Remove debug directory for clean build
+	rmdir /s /q .\build\debug
+	ninja -C build/debug clean	
+	@rem Cmake generation command for debug profile
+	cmake -B build/debug -G Ninja -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_VERBOSE_MAKEFILE=ON
+	ninja -C build/debug
+	
+  goto END_CASE
+:CASE_-br  
+	@rem Remove release directory for clean build
+	rmdir /s /q .\build\release
+	ninja -C build/release clean
+	
+	@rem Cmake generation command for Release profile
+	cmake -B build/release -G Ninja -DCMAKE_VERBOSE_MAKEFILE=ON
+	ninja -C build/release
+	
+  goto END_CASE
+  
+:CASE_-fd
+	@REM Flash the code using swd port
+	FOR /L %%i in (0,1,%c%) DO (
+	%path2% -c port=SWD index=%%i -w Out\DEBUG\bootLoader-CM7.bin 0x08000000 -v
+	%path2% -c port=SWD index=%%i -w Out\DEBUG\bootLoader-CM4.bin 0x08100000 -v
+	%path2% -c port=SWD index=%%i -w Out\DEBUG\App-CM7.bin 0x90000000 -v -el C:\ST\STM32CubeProgrammer\bin\ExternalLoader\QSPIFlashLoader_CM7.stldr
+	%path2% -c port=SWD index=%%i -w Out\DEBUG\App-CM4.bin 0x90C00000 -v -el C:\ST\STM32CubeProgrammer\bin\ExternalLoader\QSPIFlashLoader_CM7.stldr
+)
+
+  goto END_CASE
+
+:CASE_-fr
+	@REM Flash the code using swd port
+	FOR /L %%i in (0,1,%c%) DO (
+	%path2% -c port=SWD index=%%i -w Out\bootLoader-CM7.bin 0x08000000 -v
+	%path2% -c port=SWD index=%%i -w Out\bootLoader-CM4.bin 0x08100000 -v
+	%path2% -c port=SWD index=%%i -w Out\App-CM7.bin 0x90000000 -v -el C:\ST\STM32CubeProgrammer\bin\ExternalLoader\QSPIFlashLoader_CM7.stldr
+	%path2% -c port=SWD index=%%i -w Out\App-CM4.bin 0x90C00000 -v -el C:\ST\STM32CubeProgrammer\bin\ExternalLoader\QSPIFlashLoader_CM7.stldr
+)
+  goto END_CASE
+  
+:DEFAULT_CASE
+	@rem Remove debug/release directory for clean build
+	rmdir /s /q .\build\debug
+	rmdir /s /q .\build\release
+	ninja -C build/debug clean
+	ninja -C build/release clean
+	rmdir /s /q .\Out\DEBUG
+	
+	@rem Cmake generation command for debug profile
+	cmake -B build/debug -G Ninja -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_VERBOSE_MAKEFILE=ON
+	ninja -C build/debug
+	
+	@rem Cmake generation command for Release profile
+	cmake -B build/release -G Ninja -DCMAKE_VERBOSE_MAKEFILE=ON
+	ninja -C build/release
+	
+	@rem Flash the binary object
+	call :CASE_-fd
+
+  goto END_CASE
+:END_CASE
+  VER > NUL
+  goto :EOF

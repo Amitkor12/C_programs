@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// typedef double T;
+
+typedef struct ABC {
+    // T 
+    void* re;
+    // T
+    void* m;
+} ABC;
+
+ABC* create_ABC(const void* a, const void* b) {
+    ABC* abc = (ABC*)malloc(sizeof(ABC));
+    abc->re = (void*)a;
+    abc->m = (void*)b;
+    return abc;
+}
+
+void print_values(const ABC* abc) {
+    printf("re = %p, m = %p\n", abc->re, abc->m);
+}
+
+int main() {
+    int x = 10;
+    int y = 20;
+
+    ABC* obj = create_ABC(&x, &y);
+    print_values(obj);
+
+    free(obj);
+
+    return 0;
+}

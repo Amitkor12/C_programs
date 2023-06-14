@@ -1,0 +1,1 @@
+class_name object_class_name(*this )

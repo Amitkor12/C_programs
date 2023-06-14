@@ -1,0 +1,35 @@
+#include<stdio.h>
+#include<string.h>
+// creating a structure called the book
+struct book {
+    int id;
+    char book_name[50];
+    int price;
+};
+
+int main ()
+{
+    // creating two book variables
+    struct book source_book;
+    struct book destination_book;
+	
+    // defining name for the book
+    char name[] = "Memory and memcpy";
+    
+	//id
+    source_book.id=1;
+    
+	//copying name to book_name in structure
+    memcpy(source_book.book_name, name, strlen(name)+1 );
+    
+	//price
+    source_book.price=300;
+    
+	// copy from source_book to destination_book
+    memcpy (&destination_book,&source_book, sizeof(source_book) );
+    
+	// printing the values
+    printf ("After copying the details in destination book are \n Id: %d\n Name: %s\n Price: %d\n", destination_book.id,destination_book.book_name, destination_book.price );
+
+  return 0;
+}

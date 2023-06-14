@@ -1,0 +1,37 @@
+Certainly! Here's an example in C with a `main` function that demonstrates the usage of the `IMemoryManagement` class:
+
+```c
+#include <stdio.h>
+
+typedef struct {
+    struct IMemoryManagement* (*GetInstance)(void);
+    struct IMemoryManagement* m_pInstance;
+} IMemoryManagement;
+
+IMemoryManagement* GetInstance(void) {
+    return m_pInstance;
+}
+
+IMemoryManagement* m_pInstance;
+
+int main() {
+    // Create an instance of IMemoryManagement
+    IMemoryManagement memoryManagementInstance;
+    memoryManagementInstance.GetInstance = GetInstance;
+    memoryManagementInstance.m_pInstance = &memoryManagementInstance;
+
+    // Access the instance using GetInstance()
+    IMemoryManagement* pInstance = memoryManagementInstance.GetInstance();
+
+    // Print the address of the instance
+    printf("Address of IMemoryManagement instance: %p\n", pInstance);
+
+    return 0;
+}
+```
+
+In this example, we create an instance of the `IMemoryManagement` struct named `memoryManagementInstance`. We set the `GetInstance` function pointer to the `GetInstance` function itself and assign the address of `memoryManagementInstance` to the `m_pInstance` member variable.
+
+Next, we use `GetInstance()` to retrieve the instance of `IMemoryManagement` and assign it to `pInstance`. Finally, we print the address of the `IMemoryManagement` instance using `printf()`.
+
+Note that in this example, the `GetInstance()` function simply returns the address of the `m_pInstance` member variable. In a real scenario, you would typically have more complex logic in the `GetInstance()` function to handle instance creation, singleton pattern, or other memory management techniques.

@@ -1,0 +1,57 @@
+struct CTransferFunction {
+    double m_nom;
+    double m_denom;
+};
+
+struct Roots {
+    double* roots;
+    int numRoots;
+};
+
+struct CPolynom {
+    double* coefficients;
+    int size;
+};
+
+struct CTransferFunction* createTransferFunction(struct Roots* ref) {
+    struct CTransferFunction* tf = malloc(sizeof(struct CTransferFunction));
+    tf->m_nom = 1.0;
+    tf->m_denom = 1.0;
+
+    if (ref->numRoots > 0) {
+        struct CPolynom* r = createPolynom(2);
+        r->coefficients[0] = 1.0;
+        r->coefficients[1] = ref->roots[0];
+        
+        for (int i = 1; i < ref->numRoots; i++) {
+            struct CPolynom* r1 = createPolynom(2);
+            r1->coefficients[0] = 1.0;
+            r1->coefficients[1] = ref->roots[i];
+            
+            // Perform additional operations with r1
+            // ...
+            
+            free(r1);
+        }
+
+        free(r);
+    }
+
+    return tf;
+}
+
+struct CPolynom* createPolynom(int size) {
+    struct CPolynom* poly = malloc(sizeof(struct CPolynom));
+    poly->size = size;
+    poly->coefficients = malloc(size * sizeof(double));
+    return poly;
+}
+
+void destroyTransferFunction(struct CTransferFunction* tf) {
+    free(tf);
+}
+
+void destroyPolynom(struct CPolynom* poly) {
+    free(poly->coefficients);
+    free(poly);
+}

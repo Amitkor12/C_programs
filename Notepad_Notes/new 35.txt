@@ -1,0 +1,125 @@
+#include <stdbool.h>
+#include <stdlib.h>
+#include <complex.h>
+
+bool GetRoots(int n, double* p, int* numr, double complex** r)
+{
+    int numRootsAtZero = 0;
+    int numNonZeros = 0;
+    int first = 0, last = 0;
+
+    if ((p == NULL) || (r == NULL))
+    {
+        return false;
+    }
+
+    for (int i = n - 1; i >= 0; i--)
+    {
+        if (p[i] == 0.0)
+        {
+            if (0 == numNonZeros)
+            {
+                numRootsAtZero++;
+            }
+        }
+        else
+        {
+            if (numNonZeros == 0)
+            {
+                last = i;
+            }
+            first = i;
+            numNonZeros++;
+        }
+    }
+    if ((last - first) == 0)
+    {
+        //all elements are zero
+        return false;
+    }
+
+    // Strip leading zeros and throw away.
+    // Strip trailing zeros, but remember them as roots at zero.
+    int cSize = last - first;
+    double* c = (double*)malloc((cSize + 1) * sizeof(double));
+    double* d = (double*)malloc(cSize * sizeof(double));
+
+    if ((c == NULL) || (d == NULL))
+    {
+        free(c);
+        free(d);
+        return false;
+    }
+
+    for (int i = 0; i < cSize + 1; i++)
+    {
+        c[i] = p[i + first];
+        if (i < cSize)
+        {
+            d[i] = p[i + first + 1];
+        }
+    }
+    for (int i = 0; i < (cSize - 1); i++)
+    {
+        d[i] /= c[0];
+    }
+    free(c);
+
+    // Prevent relatively small leading coefficients from introducing Inf
+    // by removing them.
+    // d = c(2:end) ./ c(1);
+    // while any(isinf(d))
+    // c = c(2:end);
+    // d = c(2:end) ./ c(1);
+    // end
+
+    double* a = (double*)malloc(cSize * cSize * sizeof(double));
+
+    for (int i = 0; i < cSize * cSize; i++)
+    {
+        a[i] = 0.0;
+    }
+    for (int i = 1; i < cSize; i++)
+    {
+        a[i * cSize + i - 1] = 1.0;
+    }
+    for (int i = 0; i < cSize; i++)
+    {
+        a[i] = -d[i];
+    }
+    free(d);
+
+    // Polynomial roots via a companion matrix
+    // n = length(c);
+    // if n > 1
+    // a = diag(ones(1, n - 2, class(c)), -1);
+    // a(1, :) = -d;
+
+    double* wr = (double*)malloc(cSize * sizeof(double));
+    double* wi = (double*)malloc(cSize * sizeof(double));
+
+    // n_eigen(a, cSize, wr, wi); // You need to define or replace this function
+
+    *numr = cSize + numRootsAtZero;
+    double complex* pr = (double complex*)malloc(*numr * sizeof(double complex));
+
+    for (int i = 0; i < *numr; i++)
+    {
+        if (i < cSize)
+        {
+            pr[i] = wr[i] + wi[i] * I;
+        }
+        else
+        {
+            pr[i] = 0 + 0 * I;
+        }
+    }
+
+    *r = pr;
+
+    free(a);
+    free(wr);
+    free(wi);
+
+    return true;
+}

@@ -1,0 +1,26 @@
+#include <stdint.h>
+
+// Define the base address of the register you want to modify
+volatile uint32_t* const PWR_CR3_REG = (uint32_t*)0xXXXXXX;  // Replace XXXXXX with the actual register address
+
+// Define the bit position for the desired supply source
+#define PWR_LDO_SUPPLY_BIT_POS  4  // Replace with the actual bit position
+
+// Function to configure the power supply source using register operations
+void configureSupplySource(uint32_t supplySource) {
+    // Read the current value of the register
+    uint32_t regValue = *PWR_CR3_REG;
+
+    // Clear the bit for the specific supply source
+    regValue &= ~(1U << PWR_LDO_SUPPLY_BIT_POS);
+
+    // Set the bit based on the desired supply source
+    regValue |= (supplySource << PWR_LDO_SUPPLY_BIT_POS);
+
+    // Write the modified value back to the register
+    *PWR_CR3_REG = regValue;
+}
+
+
+
+

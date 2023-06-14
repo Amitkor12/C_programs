@@ -1,0 +1,340 @@
+#include <math.h>
+#include <stdio.h>
+#include <stdbool.h>
+
+#ifndef NAN
+  #define NAN		(0.0 / 0.0)
+#endif
+
+typedef double T;
+
+// #define None   NAN
+
+// bool isnan(double x);
+
+// #define CPU_INT   int
+// #define DEF(Struct,type,name,a,b)      Struct name; typedef int T; complex_init(&name,a,b);
+
+// #define DEF(Struct,name,a,b)      Struct name; complex_init(&name,a,b);
+
+//function prototype
+// void Add(complex *,const complex *);
+// void Sub(complex *,const complex *);
+
+typedef struct complex
+{
+    T m_re;
+    T m_im;
+    // void (*obj)(struct complex*,const struct complex*);
+    // T (*obj)(struct complex);
+}complex;
+
+void Add(complex *,const complex *);
+void Sub(complex *,const complex *);
+void Mul(complex *,const complex *);
+void Div(complex *,const complex *);
+
+T real(complex* cmp) 
+{
+     return cmp->m_re; 
+}
+
+T imag(complex* cmp) 
+{
+     return cmp->m_im; 
+}
+
+static complex complex_init(complex* cmp, const T r, const T i){
+    cmp->m_re = r;
+    cmp->m_im = i;
+    return *cmp;
+}
+
+complex complex_copy(complex* cmp1,const complex* cmp) {
+    cmp1->m_re = cmp->m_re;
+    cmp1->m_im = cmp->m_im;
+    return *cmp1;
+}
+
+complex complex_defualt(complex* cmp)
+{
+    cmp->m_re = 0;
+    cmp->m_im = 0;
+    return *cmp;
+}
+
+const complex assign(complex *cmp, const T *_Right)
+{
+    cmp -> m_re = *_Right;
+    cmp -> m_im = 0;
+    return *cmp;
+}
+
+const complex assign_other_obj(complex *cmp, const complex *_Right)
+{
+    cmp -> m_re =  _Right->m_re;
+    cmp -> m_im = (T)(_Right->m_im);
+    return *cmp;
+}
+
+complex add_assign(complex *cmp, const T _Right)
+{
+    cmp -> m_re +=  _Right;
+    return *cmp;
+}
+
+complex sub_assign(complex *cmp, T *_Right)
+{
+    cmp -> m_re -=  *_Right;
+    return *cmp;
+}
+
+complex mul_assign(complex *cmp, T *_Right)
+{
+    cmp -> m_re *= *_Right;
+    cmp -> m_im *= *_Right;
+    return *cmp;
+}
+
+complex div_assign(complex *cmp, T *_Right)
+{
+    cmp -> m_re /=  *_Right;
+    cmp -> m_im /= *_Right;
+    return *cmp;
+}
+
+complex divi(complex *cmp,const T _Right)
+{
+    complex cmp1;
+    complex_copy(&cmp1,cmp);
+    cmp1.m_re /=  _Right;
+    cmp1.m_im /= _Right;
+    return cmp1;
+}
+
+complex mul(complex *cmp,const T _Right)
+{
+    complex cmp1;
+    complex_copy(&cmp1,cmp);
+    cmp1.m_re *=  _Right;
+    cmp1.m_im *= _Right;
+    return cmp1;
+}
+
+complex add(complex *cmp,const T _Right)
+{
+    complex cmp1;
+    complex_copy(&cmp1,cmp);
+    cmp1.m_re +=  _Right;
+    cmp1.m_im += _Right;
+    return cmp1;
+}
+
+complex sub(complex *cmp,const T _Right)
+{
+    complex cmp1;
+    complex_copy(&cmp1,cmp);
+    cmp1.m_re -=  _Right;
+    cmp1.m_im -= _Right;
+    return cmp1;
+}
+
+void Add(complex *cmp,const complex *right)
+{
+    // printf("%.3lf\n",right->m_re);
+    cmp->m_re += right->m_re;
+    cmp->m_im += right->m_im;
+}
+
+const complex add_assign_complex(complex *cmp,const complex *_Right)
+{
+    Add(cmp,_Right);
+    return *cmp;
+}
+
+// void Sub(complex *cmp,const complex *right)
+// {
+//     // printf("%.3lf\n",right->m_re);
+//     cmp->m_re -= right->m_re;
+//     cmp->m_im -= right->m_im;
+// }
+
+// const complex sub_assign_complex(complex *cmp,const complex *_Right)
+// {
+//     cmp->obj = Sub;
+//     cmp->obj(cmp,_Right);
+//     return *cmp;
+// }
+
+// void Mul(complex *cmp,const complex *right)
+// {
+//     // printf("%.3lf\n",right->m_re);
+//     T tmpr = cmp->m_re * (T) right->m_re - cmp->m_im * (T) right->m_im;
+//     T tmpi = cmp->m_re * (T) right->m_im - cmp->m_im * (T) right->m_re;
+//     cmp->m_re = tmpr;
+//     cmp->m_im = tmpi;
+// }
+
+// const complex mul_assign_compl(complex *cmp,const complex *_Right)
+// {
+//     cmp->obj = Mul;
+//     cmp->obj(cmp,_Right);
+//     return *cmp;
+// }
+
+// void Div(complex *cmp,const complex *right)
+// {
+//     T _Rightreal = (T) right->m_re;
+//     T _Rightimag = (T) right->m_im;
+//     if (isnan(_Rightreal) || isnan(_Rightimag))
+//     {	// set NaN result
+//       cmp->m_re = NAN;
+//       cmp->m_im = cmp->m_re;
+//     }
+//     else if ((_Rightimag < 0 ? -_Rightimag : +_Rightimag)
+//       < (_Rightreal < 0 ? -_Rightreal : +_Rightreal))
+//     {	// |_Right.imag()| < |_Right.real()|
+//       T _Wr = _Rightimag / _Rightreal;
+//       T _Wd = _Rightreal + _Wr * _Rightimag;
+
+//       if (isnan(_Wd) || _Wd == 0)
+//       {	// set NaN result
+//         cmp->m_re = NAN;
+//         cmp->m_im = cmp->m_re;
+//       }
+//       else
+//       {	// compute representable result
+//         T _Tmp = (cmp->m_re + cmp->m_im * _Wr) / _Wd;
+//           cmp->m_im = (cmp->m_im - cmp->m_re * _Wr) / _Wd;
+//           cmp->m_re = _Tmp;
+//       }
+//     }
+//     else if (_Rightimag == 0)
+//     {	// set NaN result
+//       cmp->m_re = NAN;
+//       cmp->m_im = cmp->m_re;
+//     }
+//     else
+//     {	// 0 < |_Right.real()| <= |_Right.imag()|
+//       T _Wr = _Rightreal / _Rightimag;
+//       T _Wd = _Rightimag + _Wr * _Rightreal;
+
+//       if (isnan(_Wd) || _Wd == 0)
+//       {	// set NaN result
+//         cmp->m_re = NAN;
+//         cmp->m_im = cmp->m_re;
+//       }
+//       else
+//       {	// compute representable result
+//         T _Tmp = (cmp->m_re * _Wr + cmp->m_im) / _Wd;
+//           cmp->m_im = (cmp->m_im * _Wr - cmp->m_re) / _Wd;
+//           cmp->m_re = _Tmp;
+//       }
+//     }
+// }
+
+// const complex div_assign_compl(complex *cmp, const complex *_Right)
+// {
+//     cmp->obj = Div;
+//     cmp->obj(cmp,_Right);
+//     return *cmp;
+// }
+
+complex addition(complex cmp,complex _Right)
+{
+    complex r;
+    complex_copy(&r,&cmp);
+    r.m_re += _Right.m_re;
+    r.m_im += _Right.m_im;
+    return (r);
+}
+
+complex Subtraction(complex cmp,complex _Right)
+{
+    complex r;
+    complex_copy(&r,&cmp);
+    r.m_re -= _Right.m_re;
+    r.m_im -= _Right.m_im;
+    return (r);
+}
+
+complex multiplication(complex cmp,complex _Right)
+{
+    complex r;
+    complex_copy(&r,&cmp);
+    r.m_re *= _Right.m_re;
+    r.m_im *= _Right.m_im;
+    return (r);
+}
+
+complex division(complex cmp,complex _Right)
+{
+    complex r;
+    complex_copy(&r,&cmp);
+    r.m_re /= _Right.m_re;
+    r.m_im /= _Right.m_im;
+    return (r);
+}
+
+
+//  template implemantation
+T absolute(complex x)
+{
+    double re = real(&x);
+    double im = imag(&x);
+    return sqrt(re*re + im*im);
+}
+
+// template implementation for real
+// T real(const complex x)
+// {
+//     return real(&x);
+// }
+
+// template -- imag
+// T imag(const complex x)
+// {
+//     return imag(&x);
+// }
+
+// template -- sqrt
+complex squareroot(const complex x)
+{
+    complex comp;
+    T mag = sqrt(absolute(x));
+    T arg = atan2(x.m_im,x.m_re)/2;
+    // return complex_init(&x,mag*cos(arg), mag*sin(arg));
+    comp.m_re = mag*cos(arg);
+    comp.m_im = mag*sin(arg);
+    
+    return comp;
+}
+
+
+int main()
+{
+    complex cmp,cmp1,cmp2;            //object of structure 
+    complex_init(&cmp,12.5,13.5);        //func for value initialization for real n img
+    complex_init(&cmp1,2.5,3.5);
+    // complex_init(&cmp2,2.6,2.5);
+
+    // complex result = division(cmp1,cmp);
+    // printf("%lf\t%lf\n",real(&result),imag(&result));
+
+    // T result = real(cmp);
+    // printf("%lf\n",result);
+
+    // complex cmp4 = squareroot(cmp1);
+    // printf("from c: %.5lf\t%.5lf\n",cmp4.m_re,cmp4.m_im);
+
+    // add(&cmp,&cmp1);
+    complex result = add_assign_complex(&cmp,&cmp1);
+    printf("%lf\t%lf\n",real(&result),imag(&result));
+
+    return 0;
+
+    // double a = -98.67;
+    // double result = abs(a);
+    // printf("%lf",result);
+}
+

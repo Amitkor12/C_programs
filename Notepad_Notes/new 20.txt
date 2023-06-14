@@ -1,0 +1,21 @@
+typedef struct {
+    /* Define the members of your struct */
+    /* ... */
+} Ty_;
+
+Ty_ assign(Ty_ *left, const T *right) {
+    /* Implement the assignment operation here */
+    /* Update the members of `left` using the values from `right` */
+    /* ... */
+
+    /* Return the modified `left` object */
+    return *left;
+}
+
+
+//calling this function
+Ty_ left;
+T right;
+/* Initialize `left` and `right` with appropriate values */
+
+left = assign(&left, &right);

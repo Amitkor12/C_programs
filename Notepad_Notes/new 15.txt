@@ -1,0 +1,77 @@
+	
+if "%1" == "-bd" (
+	@rem Remove debug directory for clean build
+	rmdir /s /q .\build\debug
+	ninja -C build/debug clean	
+	@rem Cmake generation command for debug profile
+	cmake -B build/debug -G Ninja -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_VERBOSE_MAKEFILE=ON
+	ninja -C build/debug
+)
+
+if "%1" == "-br" (
+	@rem Remove release directory for clean build
+	rmdir /s /q .\build\release
+	ninja -C build/release clean
+	@rem Cmake generation command for Release profile
+	cmake -B build/release -G Ninja -DCMAKE_VERBOSE_MAKEFILE=ON
+	ninja -C build/release
+)
+
+if "%1" == "-0" (
+	if "%2" == "-fd" (
+		FOR /L %%i in (0,1,%c%) DO (
+			%path2% -c port=SWD index=%%i -w %~dp0..\Out\DEBUG\bootLoader-CM7.bin 0x08000000 -v
+			%path2% -c port=SWD index=%%i -w %~dp0..\Out\DEBUG\bootLoader-CM4.bin 0x08100000 -v
+			%path2% -c port=SWD index=%%i -w %~dp0..\Out\DEBUG\App-CM7.bin 0x90000000 -v -el C:\ST\STM32CubeProgrammer\bin\ExternalLoader\QSPIFlashLoader_CM7.stldr
+			%path2% -c port=SWD index=%%i -w %~dp0..\Out\DEBUG\App-CM4.bin 0x90C00000 -v -el C:\ST\STM32CubeProgrammer\bin\ExternalLoader\QSPIFlashLoader_CM7.stldr
+		)
+	)
+)
+
+if "%1" == "-0" (
+	if "%2" == "-fr" (
+		FOR /L %%i in (0,1,%c%) DO (
+			%path2% -c port=SWD index=%%i -w %~dp0..\Out\bootLoader-CM7.bin 0x08000000 -v
+			%path2% -c port=SWD index=%%i -w %~dp0..\Out\bootLoader-CM4.bin 0x08100000 -v
+			%path2% -c port=SWD index=%%i -w %~dp0..\Out\App-CM7.bin 0x90000000 -v -el C:\ST\STM32CubeProgrammer\bin\ExternalLoader\QSPIFlashLoader_CM7.stldr
+			%path2% -c port=SWD index=%%i -w %~dp0..\Out\App-CM4.bin 0x90C00000 -v -el C:\ST\STM32CubeProgrammer\bin\ExternalLoader\QSPIFlashLoader_CM7.stldr
+		)
+	)
+)
+
+if "%1" == "-1" (
+	if "%2" == "-fr" (
+		%path3%JLink.exe -Commanderscript D:\DevData\DevRepos\SICAM-TFCM\QSPIFlashLoader\STM32H7_M7.jlink
+	)
+)
+
+if "%1" == "-1" (
+	if "%2" == "-fd" (
+		%path3%JLink.exe -Commanderscript D:\DevData\DevRepos\SICAM-TFCM\QSPIFlashLoader\STM32H7_M7_Debug.jlink
+	)
+)
+
+if "%1" == "" (
+		@rem Remove debug/release directory for clean build
+		rmdir /s /q .\build\debug
+		rmdir /s /q .\build\release
+		ninja -C build/debug clean
+		ninja -C build/release clean
+		rmdir /s /q .\Out\DEBUG
+		
+		@rem Cmake generation command for debug profile
+		cmake -B build/debug -G Ninja -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_VERBOSE_MAKEFILE=ON
+		ninja -C build/debug
+		
+		@rem Cmake generation command for Release profile
+		cmake -B build/release -G Ninja -DCMAKE_VERBOSE_MAKEFILE=ON
+		ninja -C build/release
+		
+		@rem Flash the binary object
+		FOR /L %%i in (0,1,%c%) DO (
+			%path2% -c port=SWD index=%%i -w %~dp0..\Out\bootLoader-CM7.bin 0x08000000 -v
+			%path2% -c port=SWD index=%%i -w %~dp0..\Out\bootLoader-CM4.bin 0x08100000 -v
+			%path2% -c port=SWD index=%%i -w %~dp0..\Out\App-CM7.bin 0x90000000 -v -el C:\ST\STM32CubeProgrammer\bin\ExternalLoader\QSPIFlashLoader_CM7.stldr
+			%path2% -c port=SWD index=%%i -w %~dp0..\Out\App-CM4.bin 0x90C00000 -v -el C:\ST\STM32CubeProgrammer\bin\ExternalLoader\QSPIFlashLoader_CM7.stldr
+		)
+)

@@ -1,0 +1,35 @@
+typedef struct {
+    int order;
+    double* coefficients;
+} Cpolynom;
+
+Cpolynom Div(Cpolynom* dividend, Cpolynom* divisor, Cpolynom* remainderPolynom) {
+    Cpolynom z = *dividend; // Create a copy of the dividend
+    int qOrder = z.order - divisor->order + 1;
+    Cpolynom q;
+    q.order = qOrder;
+    q.coefficients = malloc(qOrder * sizeof(double));
+    
+    for (int i = 0; i < qOrder; i++) {
+        q.coefficients[i] = z.coefficients[i] / divisor->coefficients[0];
+        for (int j = 0; j < divisor->order; j++) {
+            if (IsToInvert(qOrder - i, divisor->order - j)) {
+                z.coefficients[i + j] += divisor->coefficients[j] * q.coefficients[i];
+            } else {
+                z.coefficients[i + j] -= divisor->coefficients[j] * q.coefficients[i];
+            }
+        }
+    }
+    
+    int remOrder = z.order;
+    Cpolynom rem;
+    rem.order = remOrder;
+    rem.coefficients = malloc(remOrder * sizeof(double));
+    
+    for (int i = 0; i < remOrder; i++) {
+        rem.coefficients[i] = z.coefficients[z.order - remOrder + i];
+    }
+    
+    *remainderPolynom = rem;
+    return q;
+}

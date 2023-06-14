@@ -1,0 +1,67 @@
+HAL_StatusTypeDef HAL_PWREx_ConfigSupply (uint32_t SupplySource)
+{
+  uint32_t tickstart;
+
+  /* Check the parameters */
+  assert_param (IS_PWR_SUPPLY (SupplySource));
+
+  /* Check if supply source was configured */
+#if defined (PWR_FLAG_SCUEN)
+  if (__HAL_PWR_GET_FLAG (PWR_FLAG_SCUEN) == 0U)
+#else
+  if ((PWR->CR3 & (PWR_CR3_SMPSEN | PWR_CR3_LDOEN | PWR_CR3_BYPASS)) != (PWR_CR3_SMPSEN | PWR_CR3_LDOEN))
+#endif /* defined (PWR_FLAG_SCUEN) */
+  {
+    /* Check supply configuration */
+    if ((PWR->CR3 & PWR_SUPPLY_CONFIG_MASK) != SupplySource)
+    {
+      /* Supply configuration update locked, can't apply a new supply config */
+      return HAL_ERROR;
+    }
+    else
+    {
+      /* Supply configuration update locked, but new supply configuration
+         matches with old supply configuration : nothing to do
+      */
+      return HAL_OK;
+    }
+  }
+
+  /* Set the power supply configuration */
+  MODIFY_REG (PWR->CR3, PWR_SUPPLY_CONFIG_MASK, SupplySource);
+
+  /* Get tick */
+  tickstart = HAL_GetTick ();
+
+  /* Wait till voltage level flag is set */
+  while (__HAL_PWR_GET_FLAG (PWR_FLAG_ACTVOSRDY) == 0U)
+  {
+    if ((HAL_GetTick () - tickstart) > PWR_FLAG_SETTING_DELAY)
+    {
+      return HAL_ERROR;
+    }
+  }
+
+#if defined (SMPS)
+  /* When the SMPS supplies external circuits verify that SDEXTRDY flag is set */
+  if ((SupplySource == PWR_SMPS_1V8_SUPPLIES_EXT_AND_LDO) ||
+      (SupplySource == PWR_SMPS_2V5_SUPPLIES_EXT_AND_LDO) ||
+      (SupplySource == PWR_SMPS_1V8_SUPPLIES_EXT)         ||
+      (SupplySource == PWR_SMPS_2V5_SUPPLIES_EXT))
+  {
+    /* Get the current tick number */
+    tickstart = HAL_GetTick ();
+
+    /* Wait till SMPS external supply ready flag is set */
+    while (__HAL_PWR_GET_FLAG (PWR_FLAG_SMPSEXTRDY) == 0U)
+    {
+      if ((HAL_GetTick () - tickstart) > PWR_FLAG_SETTING_DELAY)
+      {
+        return HAL_ERROR;
+      }
+    }
+  }
+#endif /* defined (SMPS) */
+
+  return HAL_OK;
+}

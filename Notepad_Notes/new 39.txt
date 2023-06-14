@@ -1,0 +1,18 @@
+logic 
+
+if(Pwr_cr3 & ((0x2) | (0x4)) != ((0x2)| (0x4))
+{
+if((pwr_cr3 & ((0x2) | (0x4))) != 0x2)
+{
+	error
+}
+
+	error 
+} 
+
+modify ==>
+
+regvalue = pwr_cr3
+regval &=~(0x2) 
+regvalue |= (0x2)
+pwr_cr3 = regvalue

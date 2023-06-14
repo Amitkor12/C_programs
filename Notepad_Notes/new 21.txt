@@ -1,0 +1,139 @@
+   //For protected 
+
+    // complex<double> cmp1(12.5,13.5);
+    // cout<< cmp1.real() << "," << cmp1.real()<<endl; 
+   
+    // complex<double> cmp2(cmp1);
+    // cout<< cmp2.real() <<endl;
+
+    // complex<int> cmp;
+    // cout << cmp.real() ;
+
+    // cout << cmp1.real();
+	
+	//for public 
+    complex<double> cmp1(12.5,14.3);// cmp3(12.45,4.23);
+    // cout<< cmp1.m_re << "," << cmp1.m_im<<endl; 
+   
+    // complex<double> cmp2(cmp1);
+    // cout<< cmp2.m_re <<endl;
+
+    // complex<int> cmp;
+    // cout << cmp.m_re <<endl ;
+
+    // cout << cmp1.m_re << endl;
+
+    //oprator assig -- assign real
+	
+	
+	
+	  // double value = 34;
+  // cmp1 = value;         //assigning value only for real
+  // cout << "Real : " << cmp1.real() <<"\t"<< "Imag :" << cmp1.imag();
+  
+  
+  25/05/23
+    // T value=12.36;
+  // cmp /= value;
+  // complex<double> cmp2;
+  // // cmp2/2;
+  // cout<< cmp.real() << "\t" <<cmp.imag() <<endl;
+  
+  // //assigning value only for real
+  // double value = 34;
+  // cmp = value;         
+  // cout << "Real : " << cmp.real() <<"\t"<< "Imag :" << cmp.imag() << endl;
+  
+  // assign values from one obj to other obj
+  // complex<T> cmp1;
+  // cmp1 = cmp;
+  // cout << "Real :" << cmp1.real() << "\t" << "Imag :" << cmp1.imag() << endl;
+
+  // //assigning value only for real
+  // int value = 2;
+  // cmp / value;         
+  // cout << "Real : " << cmp2.real() <<"\t"<< "Imag :" << cmp2.imag() << endl;
+  
+  
+  
+  27/05/23  --- c main 
+  complex cmp,cmp1,cmp2;            //object of structure complex
+    
+    complex_init(&cmp,12.3,2.5);    //func for value initialization for real n img
+    complex_init(&cmp1,2.6,2.5);
+    complex_init(&cmp2,2.6,2.5);
+    // printf("%lf\n",real(&cmp));        //func to dispaly values real
+    // printf("%lf\n",imag(&cmp));         //imag
+
+    //  complex_copy(&cmp1,&cmp);        //copying value into other object
+
+    // T value = 24.36;
+    // assign(&cmp,value);                 //func to assign value only for real 
+    // printf("%lf\t%lf\n",real(&cmp),imag(&cmp));
+
+    // assign_other_obj(&cmp1,&cmp);
+    // printf("%lf\t%lf\n",real(&cmp1),imag(&cmp1));
+
+    // add(&cmp,24.36);
+    // printf("%lf\t%lf\n",real(&cmp),imag(&cmp));
+
+    // cmp1 = div(&cmp,2);
+    // printf("%lf\n",real(&cmp1));
+
+    // Add(&cmp,&cmp1);
+    // printf("%.3lf\n",real(&cmp));
+
+    // cmp.obj = Add;
+    // cmp += cmp1;
+    // cmp.obj(&cmp,&cmp1);
+    // printf("%.3lf\n",real(&cmp));
+
+    // add_assign_compl(&cmp,&cmp1);
+    // sub_assign_compl(&cmp,&cmp1);
+    // mul_assign_compl(&cmp,&cmp1);
+    // div_assign_compl(&cmp,&cmp1);
+    printf("%.3lf\n",real(&cmp));
+	
+	
+	29/05/23
+	// div_assign_compl(&cmp,&cmp1);
+    printf("%lf\t%lf\n",real(&cmp),imag(&cmp));
+    printf("%lf\t%lf\n",real(&cmp1),imag(&cmp1));
+
+    complex result = addition(&cmp,cmp1);
+    // printf("%lf\t%lf\n",result.m_re,result.m_im);
+    printf("%lf\t%lf\n",real(&result),imag(&result));
+	
+	
+	
+	
+	
+	
+	
+	
+//from min_roots()
+
+// GetRoots(4,*a,4,complex &(&cmp));
+
+    int n = 3;                      // Example value for n
+    double a[] = {1.0, -4.0, 3.0};  // Example values for array a
+    int numr;
+    complex *r;
+    complex_init(r,2.5,3.5); // r;
+
+    // Call the GetRoots function
+    bool success = GetRoots(n, a, &numr, &r);
+    printf("bool:%d\n",success);
+
+    if (success) {
+        // Process the roots
+        printf("Number of roots: %d \n",numr);
+        printf("Roots: \n");
+        for (int i = 0; i < numr; i++) {
+            printf("Roots %d : %d\n",(i+1),r[i]);
+        }
+    } else 
+    {
+        
+        printf("Failed to compute roots \n");
+    }

@@ -1,0 +1,15 @@
+#include <math.h>
+
+typedef struct {
+    double real;
+    double imag;
+} Complex;
+
+Complex complex_sqrt(const Complex x) {
+    Complex result;
+    double mag = sqrt(x.real * x.real + x.imag * x.imag);
+    double arg = atan2(x.imag, x.real) / 2.0;
+    result.real = mag * cos(arg);
+    result.imag = mag * sin(arg);
+    return result;
+}

@@ -1,0 +1,38 @@
+#include <complex.h>
+
+typedef struct Cpolynom {
+    // Define the members of Cpolynom struct here
+} Cpolynom;
+
+typedef struct CTransferFunction {
+    Cpolynom m_nom;
+    Cpolynom m_denom;
+} CTransferFunction;
+
+complex double GetZPGain(complex double* pZeros, int nZeros, complex double* pPoles, int nPoles, double gain);
+
+CTransferFunction* CTransferFunction_Create(Cpolynom* nom, Cpolynom* denom) {
+    CTransferFunction* tf = (CTransferFunction*)malloc(sizeof(CTransferFunction));
+    if (tf != NULL) {
+        tf->m_nom = *nom;
+        tf->m_denom = *denom;
+    }
+    return tf;
+}
+
+void CTransferFunction_Destroy(CTransferFunction* tf) {
+    free(tf);
+}
+
+complex double CTransferFunction_GetValueAt(CTransferFunction* tf, double f);
+
+typedef struct roots {
+    // Define the members of roots struct here
+} roots;
+
+roots CTransferFunction_GetRoots(CTransferFunction* tf);
+
+int main() {
+    // Add your code logic here
+    return 0;
+}

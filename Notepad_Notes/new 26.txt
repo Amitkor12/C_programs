@@ -1,0 +1,32 @@
+Here's the C++ code converted to C:
+
+```c
+#ifndef TWLIB_IMEMORYMANAGEMENT_H
+#define TWLIB_IMEMORYMANAGEMENT_H
+
+typedef struct IMemoryManagement IMemoryManagement;
+
+struct IMemoryManagement
+{
+    void (*Reset)(void);
+    char* (*RetrieveMemBlock)(size_t memSize, const char* file, unsigned int line);
+    char* (*NewMemPoolObject)(size_t memSize, int isNoDelete);
+    void (*SetLogger)(void (*pLogFunc)(const char* fmt, ...));
+    void (*DeleteObject)(void** pValueToBeDeleted);
+    void (*DeleteArrayObject)(void** pValueToBeDeleted);
+};
+
+IMemoryManagement* IMemoryManagement_GetInstance(void);
+
+#endif // TWLIB_IMEMORYMANAGEMENT_H
+```
+
+Please note that the conversion involves a few modifications:
+
+1. The class is converted to a struct because C does not have classes.
+2. The static member `m_pInstance` is removed because C does not support static member variables.
+3. The `GetInstance` method is replaced with `IMemoryManagement_GetInstance` as a regular function outside the struct.
+4. The keyword `virtual` is removed because C does not have virtual functions.
+5. The `bool` type is replaced with `int` for `isNoDelete` parameter in `NewMemPoolObject` method.
+
+Remember to include the converted header file `IMemoryManagement.h` in your C files and implement the methods accordingly.

@@ -1,0 +1,10 @@
+struct MyStruct {
+  int data;
+  void (*myFunction)(struct MyStruct*);
+};
+
+void myFunctionImpl(struct MyStruct* obj) {
+  // Code for the function
+  // You can access the structure's data using obj->data
+  printf("Data: %d\n", obj->data);
+}

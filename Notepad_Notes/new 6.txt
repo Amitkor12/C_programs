@@ -1,0 +1,8 @@
+#include "calibrationdata.h"
+
+// Function to calculate the size of Ak struct
+size_t Ak_SizeOfThis(const struct Ak *ak) {
+    // Implementation of the virtual function for Ak struct
+    // Add your own logic here
+    return sizeof(struct Ak);
+}

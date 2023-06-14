@@ -1,0 +1,37 @@
+// poly.h
+typedef struct {
+  // ...
+} poly;
+
+// poly.c
+#include "poly.h"
+// Implement poly functionality here
+
+// transfun.h
+#include "poly.h"
+
+typedef struct {
+  poly obj;
+} transfun;
+
+void transfun_init(transfun* tf, poly* con);
+
+// transfun.c
+#include "transfun.h"
+
+void transfun_init(transfun* tf, poly* con) {
+  tf->obj = *con;
+}
+
+// main.c
+#include "poly.h"
+#include "transfun.h"
+
+int main() {
+  poly obj_poly;
+  transfun obj_trans;
+  transfun_init(&obj_trans, &obj_poly);
+  
+  // ...
+  return 0;
+}

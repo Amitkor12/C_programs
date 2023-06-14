@@ -1,0 +1,6 @@
+class abc
+{
+	typedef abc<T> Ty_;
+	abc(const Ty_& r):
+		m_re(r.m_re),m_im(r.m_im){}
+}

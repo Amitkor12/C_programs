@@ -1,0 +1,159 @@
+#include <math.h>
+
+bool isnan(double x);
+
+typedef double T;
+
+template <typename T>
+
+class complex
+{
+  typedef complex<T> Ty_;
+public:
+  complex(const T& r, const T& i) :
+    m_re(r),
+    m_im(i)
+  {
+  }
+  complex(const Ty_& r) :
+    m_re(r.m_re),
+    m_im(r.m_im)
+  {
+  }
+  complex() :
+    m_re(0),
+    m_im(0)
+  {
+  }
+
+  T real() const { return m_re; }
+  T imag() const { return m_im; }
+
+
+  const Ty_ operator=(const T& _Right)
+  {	// assign real
+    m_re = _Right;
+    m_im = 0;
+    return (*this);
+  }
+
+  const Ty_ operator=(const Ty_ _Right)
+  {	// assign another complex
+    m_re = (_Right.real());
+    m_im = (T)(_Right.imag());
+    return (*this);
+  }
+
+  Ty_ operator+=(const T _Right)
+  {	// add other complex
+    m_re += _Right;
+    return (*this);
+  }
+
+  const Ty_ operator*=(Ty_ _Right)
+  {	// multiply by other complex
+    this->Mul(_Right);
+    return (*this);
+  }
+
+  void Add(const Ty_& right)
+  {
+    m_re += right.real();
+    m_im += right.imag();
+  }
+
+  void Sub(const Ty_& right)
+  {
+    m_re -= right.m_re;
+    m_im -= right.m_im;
+  }
+
+  void Mul(const Ty_& right)
+  {
+    T tmpr = m_re*(T)right.real() - m_im*(T)right.imag();
+    T tmpi = m_re*(T)right.imag() + m_im*(T)right.real();
+    m_re = tmpr;
+    m_im = tmpi;
+  }
+
+  void Div( Ty_& right)
+  {
+    T _Rightreal = (T)right.real();
+    T _Rightimag = (T)right.imag();
+    if (isnan(_Rightreal) || isnan(_Rightimag))
+    {	// set NaN result
+      m_re=NAN;
+      m_im=m_re;
+    }
+    else if ((_Rightimag < 0 ? -_Rightimag : +_Rightimag)
+      < (_Rightreal < 0 ? -_Rightreal : +_Rightreal))
+    {	// |_Right.imag()| < |_Right.real()|
+      T _Wr = _Rightimag / _Rightreal;
+      T _Wd = _Rightreal + _Wr * _Rightimag;
+
+      if (isnan(_Wd) || _Wd == 0)
+      {	// set NaN result
+        m_re = NAN;
+        m_im = m_re;
+      }
+      else
+      {	// compute representable result
+        T _Tmp = (m_re + m_im * _Wr) / _Wd;
+          m_im = (m_im - m_re * _Wr) / _Wd;
+          m_re = _Tmp;
+      }
+    }
+    else if (_Rightimag == 0)
+    {	// set NaN result
+      m_re = NAN;
+      m_im = m_re;
+    }
+    else
+    {	// 0 < |_Right.real()| <= |_Right.imag()|
+      T _Wr = _Rightreal / _Rightimag;
+      T _Wd = _Rightimag + _Wr * _Rightreal;
+
+      if (isnan(_Wd) || _Wd == 0)
+      {	// set NaN result
+        m_re = NAN;
+        m_im = m_re;
+      }
+      else
+      {	// compute representable result
+        T _Tmp = (m_re * _Wr + m_im) / _Wd;
+          m_im = (m_im * _Wr - m_re) / _Wd;
+          m_re = _Tmp;
+      }
+    }
+  }
+
+
+protected:
+
+  T m_re;
+  T m_im;
+};
+
+template <typename T> T abs(complex<T> x)
+{
+  double re = x.real();
+  double im = x.imag();
+  return sqrt(re*re + im*im);
+}
+
+template <typename T> T real(const complex<T> x)
+{
+  return x.real();
+}
+
+template <typename T> T imag(const complex<T> x)
+{
+  return x.imag();
+}
+
+template <typename T> complex<T> sqrt(const complex<T> x)
+{
+  T mag = sqrt(abs(x));
+  double arg = atan2(x.imag(), x.real())/2;
+  return complex<T>(mag*cos(arg), mag*sin(arg));
+}

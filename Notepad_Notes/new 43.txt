@@ -1,0 +1,20 @@
+#include <stdio.h>
+#include <assert.h>
+
+double* get_poly_factor(double* poly_factors, int n, int m_n) {
+    assert(n >= 0 && n < m_n);
+    return &poly_factors[n];
+}
+
+int main() {
+    double polyFactors[] = {1.2, 3.4, 5.6};
+    int m_n = sizeof(polyFactors) / sizeof(polyFactors[0]);
+
+    double* factor = get_poly_factor(polyFactors, 1, m_n);
+    printf("Factor at index 1: %.2f\n", *factor);
+
+    *factor = 7.8;
+    printf("Updated factor at index 1: %.2f\n", *factor);
+
+    return 0;
+}

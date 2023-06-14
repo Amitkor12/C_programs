@@ -1,0 +1,46 @@
+#include <stdio.h>
+#include <math.h>
+
+void main()
+  {
+    FILE *dc = stdout;
+    int z = 1,s = 2;
+    double **daten;
+    double dFak; 
+    daten[0][0] =10;
+    
+    // Ausgabe einer Matrix in MATLAB- Syntax; kann aus dem TRACE nach MATLAG kopiert werden
+    // um dort damit weiterzurechnen
+    // printf("%d,%d",z,s);
+    fprintf(dc, "lines: %d\tcolumns: %d\t",z,s);            //dc << "lines: " << z << "\n" << "columns:" << s << "\n";
+    int exp= (int)(log10(abs(daten[0][0])));
+    printf("%d",exp);
+    exp=3*(exp/3); //in 1e3-Schritten
+    if (exp<0) 
+      exp -=3;
+    if (exp != 0)
+    {
+      fprintf(dc,"10e%d*[",exp);                            // dc  <<"10e"<<exp<<" *[ \n";
+      dFak= (exp>0)? 1.0/pow(10,exp) : pow(10,-exp);
+    }
+    else
+      dFak=1.0;
+    for (int i=0; i<z; i++)
+    {
+      for (int j=0; j<s; j++)
+      {
+        //char st[20];	
+        //sprintf(st,"%15.8f",daten[i][j]*dFak);
+        fprintf(dc,"%lf",daten[i][j]*dFak);		      // dc << daten[i][j] * dFak;
+        //dc << st;
+        if( j < (s-1))
+        {
+          fprintf(dc,", ");       //dc << ",  ";
+        }
+      }
+      if( i < (z-1))
+        fprintf(dc,";\n");        //dc << ";\n";
+      else
+        fprintf(dc,"];\n");       //dc << "];\n";
+    }
+  }

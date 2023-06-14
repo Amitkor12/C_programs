@@ -1,0 +1,20 @@
+#define 	WRITE_REG(REG, VAL)   						((REG) = (VAL))
+#define 	READ_REG(REG)         						((REG))
+#define 	MODIFY_REG(REG, CLEARMASK, SETMASK)  		WRITE_REG((REG), (((READ_REG(REG)) & (~(CLEARMASK))) | (SETMASK)))
+
+#define 	PWR_CR3_SMPSEN_Pos              			(2U)
+#define 	PWR_CR3_SMPSEN_Msk              			(0x1UL << PWR_CR3_SMPSEN_Pos)            /*!< 0x00000004 */
+#define 	PWR_CR3_SMPSEN                  			PWR_CR3_SMPSEN_Msk                       /*!< SMPS enable */
+
+#define 	PWR_SMPS_SUPPLY 							PWR_CR3_SMPSEN;
+#define 	PWR_SUPPLY_CONFIG_MASK 						PWR_CR3_SMPSEN;
+
+//to modify the register
+MODIFY_REG (PWR_CR3, PWR_SUPPLY_CONFIG_MASK, SupplySource);
+
+
+
+uint32_t HAL_PWREx_GetSupplyConfig (void)
+{
+  return (PWR->CR3 & PWR_SUPPLY_CONFIG_MASK);
+}

@@ -1,0 +1,257 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <complex.h>
+
+#define MAX_SIZE 100
+
+typedef struct {
+    int nZeros;
+    int nPoles;
+    double complex *zeros;
+    double complex *poles;
+    double gain;
+} Roots;
+
+Roots* createRoots(int numZeros, int numPoles, double complex zeros[], double complex poles[], double gain) {
+    Roots *root = (Roots*)malloc(sizeof(Roots));
+    root->nZeros = numZeros;
+    root->nZeros = numPoles;
+    root->zeros = (double complex*)malloc(numZeros * sizeof(double complex));
+    root->poles = (double complex*)malloc(numPoles * sizeof(double complex));
+    root->gain = gain;
+
+    for (int i = 0; i < numZeros; i++) {
+        root->zeros[i] = zeros[i];
+    }
+
+    for (int i = 0; i < numPoles; i++) {
+        root->poles[i] = poles[i];
+    }
+
+    return root;
+}
+
+Roots* createEmptyRoots() {
+    Roots *root = (Roots*)malloc(sizeof(Roots));
+    root->nZeros = 0;
+    root->nPoles = 0;
+    root->zeros = NULL;
+    root->poles = NULL;
+    root->gain = 0.0;
+
+    return root;
+}
+
+Roots* copyRoots(const Roots *data) {
+    Roots *root = (Roots*)malloc(sizeof(Roots));
+    root->nZeros = data->nZeros;
+    root->nPoles = data->nPoles;
+    root->zeros = (double complex*)malloc(data->nZeros * sizeof(double complex));
+    root->poles = (double complex*)malloc(data->nPoles * sizeof(double complex));
+    root->gain = data->gain;
+
+    for (int i = 0; i < data->nZeros; i++) {
+        root->zeros[i] = data->zeros[i];
+    }
+
+    for (int i = 0; i < data->nPoles; i++) {
+        root->poles[i] = data->poles[i];
+    }
+
+    return root;
+}
+
+void destroyRoots(Roots *root) {
+    if (root) {
+        free(root->zeros);
+        free(root->poles);
+        free(root);
+    }
+}
+
+Roots* assignRoots(Roots *destination, const Roots *source) {
+    if (destination == source) {
+        return destination;
+    }
+
+    free(destination->zeros);
+    free(destination->poles);
+
+    destination->nZeros = source->nZeros;
+    destination->nPoles = source->nPoles;
+    destination->zeros = (double complex*)malloc(source->nZeros * sizeof(double complex));
+    destination->poles = (double complex*)malloc(source->nPoles * sizeof(double complex));
+    destination->gain = source->gain;
+
+    for (int i = 0; i < source->nZeros; i++) {
+        destination->zeros[i] = source->zeros[i];
+    }
+
+    for (int i = 0; i < source->nPoles; i++) {
+        destination->poles[i] = source->poles[i];
+    }
+
+    return destination;
+}
+
+int equalsRoots(const Roots *root, Roots *ref) {
+    if (root->nZeros != ref->nZeros || root->nPoles != ref->nPoles) {
+        return 0;
+    }
+
+    for (int i = 0; i < root->nZeros; i++) {
+        if (root->zeros[i] != ref->zeros[i]) {
+            return 0;
+        }
+    }
+
+    for (int i = 0; i < root->nPoles; i++) {
+        if (root->poles[i] != ref->poles[i]) {
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
+Roots* convolveRoots(const Roots *root, const Roots *other) {
+    int maxSize = root->nZeros + other->nZeros;
+    double complex *newZeros = (double complex*)malloc(maxSize * sizeof(double complex));
+    int numZeros = 0;
+
+    for (int i = 0; i < root->nZeros; i++) {
+        int stripped = 0;
+
+        for (int j = 0; j < other->nPoles; j++) {
+            if (root->zeros[i] == other->poles[j]) {
+                stripped = 1;
+                break;
+            }
+        }
+
+        if (!stripped) {
+            newZeros[numZeros] = root->zeros[i];
+            numZeros++;
+        }
+    }
+
+    for (int i = 0; i < other->nZeros; i++) {
+        int stripped = 0;
+
+        for (int j = 0; j < root->nPoles; j++) {
+            if (other->zeros[i] == root->poles[j]) {
+                stripped = 1;
+                break;
+            }
+        }
+
+        if (!stripped) {
+            newZeros[numZeros] = other->zeros[i];
+            numZeros++;
+        }
+    }
+
+    Roots *result = (Roots*)malloc(sizeof(Roots));
+    result->nZeros = numZeros;
+    result->nPoles = root->nPoles + other->nPoles;
+    result->zeros = newZeros;
+    result->poles = (double complex*)malloc(result->nPoles * sizeof(double complex));
+    result->gain = root->gain * other->gain;
+
+    for (int i = 0; i < root->nPoles; i++) {
+        result->poles[i] = root->poles[i];
+    }
+
+    for (int i = 0; i < other->nPoles; i++) {
+        result->poles[root->nPoles + i] = other->poles[i];
+    }
+
+    return result;
+}
+
+double complex getValueAt(const Roots *root, double f) {
+    double complex result = 0.0;
+
+    for (int i = 0; i < root->nZeros; i++) {
+        result += root->gain * cpow(cexp(I * f), root->zeros[i]);
+    }
+
+    for (int i = 0; i < root->nPoles; i++) {
+        result /= cpow(cexp(I * f), root->poles[i]);
+    }
+
+    return result;
+}
+
+double complex* getRoot(Roots *root, int order) {
+    if (order < root->nZeros) {
+        return &(root->zeros[order]);
+    } else {
+        return &(root->poles[order - root->nZeros]);
+    }
+}
+
+double complex* getPole(Roots *root, int order) {
+    return &(root->poles[order]);
+}
+
+double complex* getZero(Roots *root, int order) {
+    return &(root->zeros[order]);
+}
+
+double complex* getPoles(Roots *root) {
+    return root->poles;
+}
+
+double complex* getZeros(Roots *root) {
+    return root->zeros;
+}
+
+int getNumRoots(Roots *root) {
+    return root->nZeros;
+}
+
+int getNumPoles(Roots *root) {
+    return root->nPoles;
+}
+
+void setGain(Roots *root, double gain, double f) {
+    root->gain = gain;
+}
+
+void sortRoots(Roots *root) {
+    // Implement the sorting logic here
+}
+
+double getGain(Roots *root) {
+    return root->gain;
+}
+
+double getEpsilon() {
+    const double cEpsilon = 0.000001;
+    return cEpsilon;
+}
+
+double complex getRPGain(double complex *r, int nr, double complex *p, int np) {
+    // Implement the logic to calculate the RPGain
+    return 0.0;
+}
+
+void cutRoots(Roots *root) {
+    // Implement the logic to cut the roots
+}
+
+int isCutted(int ix, int nCutted, int *pCutted) {
+    // Implement the logic to check if a root is cutted
+    return 0;
+}
+
+int canCut(int n1, int *p1, double complex p2) {
+    // Implement the logic to check if a root can be cut
+    return 0;
+}
+
+int main() {
+    // Test the roots functions here
+    return 0;
+}

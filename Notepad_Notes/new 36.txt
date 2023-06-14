@@ -1,0 +1,21 @@
+Cpolynom operator_add(const Cpolynom* this, const Cpolynom* other) {
+    if ((this->m_polyFactors == NULL) || (other->m_polyFactors == NULL)) {
+        return Cpolynom_create(0U);
+    }
+
+    int size = (Order(this) > Order(other)) ? Order(this) : Order(other);
+    Cpolynom res = Cpolynom_create(size);
+    int ownOffs = Order(this) - 1;
+    int resOffs = size - 1;
+    int otherOffs = Order(other) - 1;
+    int j;
+    for (j = 0; j < size; j++) {
+        if (ownOffs - j >= 0) {
+            res.polyFactors[resOffs - j] += this->polyFactors[ownOffs - j];
+        }
+        if (otherOffs - j >= 0) {
+            res.polyFactors[resOffs - j] += other->polyFactors[otherOffs - j];
+        }
+    }
+    return res;
+}

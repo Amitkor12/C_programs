@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct {
+    int n_ro; // Assuming this is a member variable to store the real part
+    int n_io; // Assuming this is a member variable to store the imaginary part
+} ak;
+
+ak* create_ak(int r, int p) {
+    ak* obj = (ak*)malloc(sizeof(ak));
+    if (obj != NULL) {
+        obj->n_ro = r;
+        obj->n_io = p;
+    }
+    return obj;
+}
+
+void destroy_ak(ak* obj) {
+    if (obj != NULL) {
+        free(obj);
+    }
+}
+
+int main() {
+    ak* my_ak = create_ak(5, 10);
+
+    if (my_ak != NULL) {
+        printf("Real Part: %d\n", my_ak->n_ro);
+        printf("Imaginary Part: %d\n", my_ak->n_io);
+    }
+
+    destroy_ak(my_ak);
+
+    return 0;
+}
