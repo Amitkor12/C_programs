@@ -1,5 +1,4 @@
-*.exe,
-*.
+*.exe
 FromHackerRank/CPP_Programs/String_split.cpp
 FromHackerRank/CPP_Programs/HackerRank.cpp
 Bit_shift_example.c
