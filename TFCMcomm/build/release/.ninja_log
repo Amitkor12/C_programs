@@ -1,0 +1,6 @@
+# ninja log v5
+14	1314	7103286792313984	TFCMcommApp/CMakeFiles/TFCMcommApp.dir/main.cpp.obj	12a2356463ea704b
+0	1320	7103286792313984	TFCMcomm/CMakeFiles/TFCMcomm.dir/main.cpp.obj	1eefb460c12e377f
+1322	1694	7103286796079196	../../Out/libTFCMcomm.dll	bf49a9cb7fd8d0ee
+1322	1694	7103286796079196	../../Out/libTFCMcomm.dll.a	bf49a9cb7fd8d0ee
+1695	2152	7103286800712111	../../Out/TFCMcommApp.exe	c2a467c635ac1b60

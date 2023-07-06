@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1688461790 source:d:\amit\tfcmcomm\tfcmcomm\main.cpp
+	"main.h"
+
+1688459838 d:\amit\tfcmcomm\tfcmcomm\main.h
+	<iostream>
+	<stdlib.h>
+	<string.h>
+	<Windows.h>
+
