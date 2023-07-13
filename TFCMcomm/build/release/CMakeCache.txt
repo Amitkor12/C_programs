@@ -263,22 +263,13 @@ CMAKE_TOOLCHAIN_FILE:FILEPATH=D:/Amit/Programs/C Programs/TFCMcomm/Common/compil
 CMAKE_VERBOSE_MAKEFILE:BOOL=ON
 
 //Value Computed by CMake
-TFCMcommApp_BINARY_DIR:STATIC=D:/Amit/Programs/C Programs/TFCMcomm/build/release/TFCMcommApp
+TFCMCOMM_BINARY_DIR:STATIC=D:/Amit/Programs/C Programs/TFCMcomm/build/release/TFCMcomm
 
 //Value Computed by CMake
-TFCMcommApp_IS_TOP_LEVEL:STATIC=OFF
+TFCMCOMM_IS_TOP_LEVEL:STATIC=OFF
 
 //Value Computed by CMake
-TFCMcommApp_SOURCE_DIR:STATIC=D:/Amit/Programs/C Programs/TFCMcomm/TFCMcommApp
-
-//Value Computed by CMake
-tfcmcomm_BINARY_DIR:STATIC=D:/Amit/Programs/C Programs/TFCMcomm/build/release/TFCMcomm
-
-//Value Computed by CMake
-tfcmcomm_IS_TOP_LEVEL:STATIC=OFF
-
-//Value Computed by CMake
-tfcmcomm_SOURCE_DIR:STATIC=D:/Amit/Programs/C Programs/TFCMcomm/TFCMcomm
+TFCMCOMM_SOURCE_DIR:STATIC=D:/Amit/Programs/C Programs/TFCMcomm/TFCMcomm
 
 
 ########################
@@ -400,7 +391,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=3
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=2
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //objcopy tool

@@ -1,8 +1,6 @@
 D:/Amit/Programs/C Programs/TFCMcomm/build/release/CMakeFiles/edit_cache.dir
 D:/Amit/Programs/C Programs/TFCMcomm/build/release/CMakeFiles/rebuild_cache.dir
 D:/Amit/Programs/C Programs/TFCMcomm/build/release/TFCMcomm/CMakeFiles/TFCMcomm.dir
+D:/Amit/Programs/C Programs/TFCMcomm/build/release/TFCMcomm/CMakeFiles/TFCMCOMM.dir
 D:/Amit/Programs/C Programs/TFCMcomm/build/release/TFCMcomm/CMakeFiles/edit_cache.dir
 D:/Amit/Programs/C Programs/TFCMcomm/build/release/TFCMcomm/CMakeFiles/rebuild_cache.dir
-D:/Amit/Programs/C Programs/TFCMcomm/build/release/TFCMcommApp/CMakeFiles/TFCMcommApp.dir
-D:/Amit/Programs/C Programs/TFCMcomm/build/release/TFCMcommApp/CMakeFiles/edit_cache.dir
-D:/Amit/Programs/C Programs/TFCMcomm/build/release/TFCMcommApp/CMakeFiles/rebuild_cache.dir

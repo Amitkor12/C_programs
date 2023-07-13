@@ -12,4 +12,3 @@ project(CCP)
 
 # Compile code only if It is not for GitCommitID generation
 add_subdirectory(TFCMcomm)
-add_subdirectory(TFCMcommApp)

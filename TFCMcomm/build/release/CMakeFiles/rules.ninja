@@ -41,7 +41,7 @@ rule CXX_SHARED_LIBRARY_LINKER__TFCMcomm_
 #############################################
 # Rule for compiling CXX files.
 
-rule CXX_COMPILER__TFCMcommApp_
+rule CXX_COMPILER__TFCMCOMM_
   depfile = $DEP_FILE
   deps = gcc
   command = C:\Users\incads1918\Downloads\MinGW\bin\g++.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
@@ -51,7 +51,7 @@ rule CXX_COMPILER__TFCMcommApp_
 #############################################
 # Rule for linking CXX executable.
 
-rule CXX_EXECUTABLE_LINKER__TFCMcommApp_
+rule CXX_EXECUTABLE_LINKER__TFCMCOMM_
   command = cmd.exe /C "$PRE_LINK && C:\Users\incads1918\Downloads\MinGW\bin\g++.exe $FLAGS $LINK_FLAGS $in -o $TARGET_FILE -Wl,--out-implib,$TARGET_IMPLIB -Wl,--major-image-version,0,--minor-image-version,0 $LINK_PATH $LINK_LIBRARIES && $POST_BUILD"
   description = Linking CXX executable $TARGET_FILE
   restat = $RESTAT

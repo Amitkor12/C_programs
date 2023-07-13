@@ -17,7 +17,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY  ${OUT_PATH}/$<$<CONFIG:DEBUG>:DEBUG>)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY  ${OUT_PATH}/$<$<CONFIG:DEBUG>:DEBUG>)
 
 # Set the project name
-project(tfcmcomm)
+project(TFCMCOMM)
 set(EXECUTABLE ${PROJECT_NAME})
 
 enable_language(C ASM)
@@ -28,7 +28,19 @@ set(CMAKE_C_EXTENSIONS OFF)
 
 # Add the library target
 add_library(TFCMcomm SHARED
-    main.cpp
+    Debug.cpp
     main.h
-    TFCMcomm.cbp
 )
+
+# List of source files
+set(SRC_FILES
+        Release.cpp
+        )
+
+add_executable(${EXECUTABLE} ${SRC_FILES})
+
+# Add the include directories for the Comm project
+target_include_directories(${EXECUTABLE} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}")
+
+# Link the Comm library
+target_link_libraries(${EXECUTABLE} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../Out/libTFCMcomm.dll")

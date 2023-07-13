@@ -1,0 +1,6 @@
+EXPORTS
+    _ZN7dllspec8dllclass10MsgReceiveEv @1
+    _ZN7dllspec8dllclass11SetTimeoutsEv @2
+    _ZN7dllspec8dllclass14OpenSerialPortEv @3
+    _ZN7dllspec8dllclass16ConfigSerialPortEv @4
+    _ZN7dllspec8dllclass7MsgSendEPc @5
